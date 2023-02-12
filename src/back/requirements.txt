@@ -7,3 +7,5 @@ alembic
 PyMySQL
 cryptography
 python-dotenv
+requests_oauthlib
+python-dateutil

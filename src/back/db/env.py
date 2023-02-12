@@ -8,8 +8,7 @@ import sys
 sys.path.append('/app')
 from database import Base
 
-from models import foo
-from models import bar
+from models import models
 import os
 from dotenv import load_dotenv
 
