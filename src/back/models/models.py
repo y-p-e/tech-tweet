@@ -18,8 +18,8 @@ class User(Base):
     created_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP'))
     updated_at = Column(DateTime, default=datetime.now, server_default=text('CURRENT_TIMESTAMP'), server_onupdate=text('CURRENT_TIMESTAMP'))
 
-    first_default = relationship("FirstDefault", uselist=False)
-    second_default = relationship("SecondDefault", uselist=False)
+    first_default = relationship("FirstDefaultCategory", uselist=False)
+    second_default = relationship("SecondDefaultCategory", uselist=False)
 
 
 class Category(Base):
