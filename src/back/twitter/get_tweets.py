@@ -16,15 +16,18 @@ class TweetModel(BaseModel):
 
 class TweetCategoryModel(BaseModel):
 	category_id: int
+	img: str
 	tweets: List[TweetModel]
 
 
 def get_translate_tweets():
 	categories = session.query(Category).order_by(Category.id).all()
 	tweet_dict = {}
+	response_list = []
 	for category in categories:
 		tweet_dict[category.id] = []
 		tweets = session.query(Tweet).filter(Tweet.category_id == category.id).order_by(desc(Tweet.tweeted_at)).limit(100).all()
+		tweet_list = []
 		for tweet in tweets:
 			tweet_model = TweetModel(
 				id=tweet.id,
@@ -33,13 +36,20 @@ def get_translate_tweets():
 				tweet_ja=tweet.tweet_ja,
 				profile_img_url=tweet.tweet_user.profile_img_url
 			)
-			tweet_dict[category.id].append(tweet_model)
-
-	response_list = []
-	for k, v in tweet_dict.items():
+			tweet_list.append(tweet_model)
+			# tweet_dict[category.id].append(tweet_model)
 		tweet_category_model = TweetCategoryModel(
-			category_id=k,	
-			tweets=v
+			category_id=category.id,
+			img=category.img_url,
+			tweets=tweet_list,
 		)
 		response_list.append(tweet_category_model)
+
+	# response_list = []
+	# for k, v in tweet_dict.items():
+	# 	tweet_category_model = TweetCategoryModel(
+	# 		category_id=k,	
+	# 		tweets=v
+	# 	)
+	# 	response_list.append(tweet_category_model)
 	return response_list

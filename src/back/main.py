@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from typing import List
 from twitter_auth.get_twitter_auth_url import get_twitter_auth_url, TwitterAuthUrl
 from twitter_auth.twitter_auth_callback import twitter_auth_callback, TwitterAccessToken
-from twitter_auth.get_twitter_current_user import get_twitter_current_user, TwitterCurentUserAccessToken
+from twitter_auth.get_twitter_current_user import get_twitter_current_user, CurentUser
 from twitter.save_tweet_user import save_tweet_user, TweetUserData
 from twitter.save_tweets import save_translate_tweets
 from category.save_category import save_tweet_category, CategoryData
@@ -17,11 +17,11 @@ def get_twitter_auth()->TwitterAuthUrl:
   return get_twitter_auth_url()
 
 @app.get("/twitter_auth_callback")
-def twitter_auth_cb(state: str, code: str)->TwitterAccessToken:
+def twitter_auth_cb(code: str)->CurentUser:
   return twitter_auth_callback(code)
 
-@app.post("/current_user")
-def get_current_user(access_token: str, session_id: str)->TwitterCurentUserAccessToken:
+@app.get("/current_user")
+def get_current_user(access_token: str, session_id: str)->CurentUser:
   return get_twitter_current_user(access_token, session_id)
 
 @app.get("/categories")
@@ -45,10 +45,10 @@ def get_tweets()->List[TweetCategoryModel]:
 def save_tweets():
   return save_translate_tweets()
 
-@app.put("users/{user_id}/first_default_category")
-def update_first_category(user_id: int, deault_category: DeaultCategory):
-  return update_first_default_category(user_id, deault_category)
+@app.put("/users/{user_id}/first_default_category")
+def update_first_category(user_id: int, session_id: str, deault_category: DeaultCategory):
+  return update_first_default_category(user_id, session_id, deault_category)
 
-@app.put("users/{user_id}/second_default_category")
-def update_second_category(user_id: int, deault_category: DeaultCategory):
-  return update_second_default_category(user_id, deault_category)
+@app.put("/users/{user_id}/second_default_category")
+def update_second_category(user_id: int, session_id: str, deault_category: DeaultCategory):
+  return update_second_default_category(user_id, session_id, deault_category)

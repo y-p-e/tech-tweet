@@ -14,105 +14,46 @@ import Dialog from '@mui/material/Dialog';
 import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import Grid from '@mui/material/Grid';
 import Typography from '../components/Typography';
 import NextLink from 'next/link';
+import type {CategoryDataType} from '../../index'
+import Avatar from '@mui/material/Avatar';
+import {registDefaultCateogry} from '../../../services/category/regist-default';
+import useSWR from 'swr'
+import { fetcher } from '../../../utils';
+import { logout } from '../../../services/auth/logout';
 
-function SelectedListItem() {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+export interface SelectedListItemProps {
+  category_datas: CategoryDataType[];
+  selectedIndex: number;
+  setSelectedIndex: (indexNumber: number) => void;
+}
 
+function SelectedListItem(props: SelectedListItemProps) {
+  const {category_datas, selectedIndex, setSelectedIndex} = props
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number,
   ) => {
     setSelectedIndex(index);
   };
-
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
       <List component="nav" aria-label="main mailbox folders" sx={{"Mui-selected": {color: "blue"}}}>
+      {category_datas.map((category_data) => (
         <ListItemButton
-          selected={selectedIndex === 0}
-          onClick={(event) => handleListItemClick(event, 0)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
+          key={category_data.id}
+          selected={selectedIndex === category_data.id}
+          onClick={(event) => handleListItemClick(event, category_data.id)}
+          // sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
         >
           <ListItemIcon>
-            <InboxIcon />
+            <Avatar alt="Remy Sharp" src={category_data.img_url} />
           </ListItemIcon>
-          <ListItemText primary="Inbox" />
+          <ListItemText primary={category_data.name} />
         </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(event, 1)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 2}
-          onClick={(event) => handleListItemClick(event, 2)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 3}
-          onClick={(event) => handleListItemClick(event, 3)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 4}
-          onClick={(event) => handleListItemClick(event, 4)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 5}
-          onClick={(event) => handleListItemClick(event, 5)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 6}
-          onClick={(event) => handleListItemClick(event, 6)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 7}
-          onClick={(event) => handleListItemClick(event, 7)}
-          sx={{'&.Mui-selected': {bgcolor: 'secondary.dark'}}}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
+      ))}
       </List>
     </Box>
   );
@@ -124,12 +65,25 @@ export interface ConfirmationDialogRawProps {
   value: string;
   open: boolean;
   onClose: (value?: string) => void;
+  category_datas: CategoryDataType[];
+  handleFirstTweetNumber: (tweetNumber: number) => void;
+  handleSecondTweetNumber: (tweetNumber: number) => void;
 }
 
 function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
-  const { onClose, value: valueProp, open, ...other } = props;
+  const { data } = useSWR('/api/current-user', fetcher)
+  const firstTweetNumber = data.firstDefault
+  const secondTweetNumber = data.secondDefault
+  const { category_datas, handleFirstTweetNumber, handleSecondTweetNumber, onClose, value: valueProp, open, ...other } = props;
   const [value, setValue] = React.useState(valueProp);
   const radioGroupRef = React.useRef<HTMLElement>(null);
+  const [selectedLeftIndex, setSelectedLeftIndex] = React.useState(firstTweetNumber);
+  const [selectedRightIndex, setSelectedRightIndex] = React.useState(secondTweetNumber);
+  
+  React.useEffect(() => {
+    setSelectedLeftIndex(firstTweetNumber)
+    setSelectedRightIndex(secondTweetNumber)
+  }, [firstTweetNumber, secondTweetNumber])
 
   React.useEffect(() => {
     if (!open) {
@@ -144,20 +98,24 @@ function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
   };
 
   const handleCancel = () => {
+    setSelectedLeftIndex(firstTweetNumber)
+    setSelectedRightIndex(secondTweetNumber)
     onClose();
   };
 
   const handleOk = () => {
+    handleFirstTweetNumber(selectedLeftIndex)
+    handleSecondTweetNumber(selectedRightIndex)
+    registDefaultCateogry({
+      firstDefaultNumber: selectedLeftIndex,
+      secondDefaultNumber: selectedRightIndex,
+    })
     onClose(value);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
   };
 
   return (
     <Dialog
-      sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 600 } }}
+      sx={{ '& .MuiDialog-paper': { width: { xs: '60%', md: '80%' }, maxHeight: 600 }}}
       maxWidth="md"
       TransitionProps={{ onEntering: handleEntering }}
       open={open}
@@ -166,17 +124,28 @@ function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
       <DialogTitle>Tech Tweet Select</DialogTitle>
       <DialogContent dividers>
         <Grid container spacing={2}>
-          <Grid item xs={6} sx={{ borderRight: 1}}>
-            <Typography variant="h6">
+          <Grid item md={6} xs={12} sx={{ borderRight: { md: 1}}}>
+            <Typography variant="h6" sx={{ display: { xs: 'none', md: 'block' }}}>
               Left
             </Typography>
-            <SelectedListItem />
+            <Typography variant="h6" sx={{ display: { xs: 'block', md: 'none' }, textAlign:"center"}}>
+              Default
+            </Typography>
+            <SelectedListItem
+              category_datas={category_datas}
+              selectedIndex={selectedLeftIndex}
+              setSelectedIndex={setSelectedLeftIndex}
+            />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} sx={{ display: { xs: 'none', md: 'block' }}}>
             <Typography variant="h6">
               Right
             </Typography>
-            <SelectedListItem />
+            <SelectedListItem 
+              category_datas={category_datas}
+              selectedIndex={selectedRightIndex}
+              setSelectedIndex={setSelectedRightIndex}
+            />
           </Grid>
         </Grid>
       </DialogContent>
@@ -199,13 +168,30 @@ const rightLink = {
 
 type AppAppBarProps = {
   isShowMenuIcon: boolean,
+  category_datas: CategoryDataType[],
+  handleFirstTweetNumber: (tweetNumber: number) => void,
+  handleSecondTweetNumber: (tweetNumber: number) => void,
 }
 
 function AppAppBar(props: AppAppBarProps) {
-  const {isShowMenuIcon} = props
+  const { data } = useSWR('/api/current-user', fetcher)
+  const name = data?.name
+  const [isSignIn, setIsSignIn] = React.useState(false);
+  React.useEffect(() => {
+    if (!name || name === '' ) {
+      setIsSignIn(false)
+    } else {
+      setIsSignIn(true)
+    }
+  }, [name])
+  const {isShowMenuIcon, category_datas, handleFirstTweetNumber, handleSecondTweetNumber} = props
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('Dione');
 
+  const handleClickLogout = () => {
+    logout()
+    setIsSignIn(false)
+  }
   const handleClickListItem = () => {
     setOpen(true);
   };
@@ -233,6 +219,9 @@ function AppAppBar(props: AppAppBarProps) {
                   keepMounted
                   open={open}
                   onClose={handleClose}
+                  category_datas={category_datas}
+                  handleFirstTweetNumber={handleFirstTweetNumber}
+                  handleSecondTweetNumber={handleSecondTweetNumber}
                   value={value}
                 />
               </>
@@ -249,6 +238,40 @@ function AppAppBar(props: AppAppBarProps) {
               {'Tech Tweet'}
             </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+          {isSignIn &&
+              <>
+                <Typography variant="h6" sx={{color: "secondary.light"}}>
+                  {name}
+                </Typography>
+              </>
+            }
+          {!isSignIn &&
+              <>
+                <Link
+                  variant="h6"
+                  underline="none"
+                  sx={{ ...rightLink, color: 'secondary.main' }}
+                  href="/sign-in"
+                  component={NextLink}
+                >
+                  {'SignIn'}
+                </Link>
+              </>
+            }
+          {isSignIn &&
+              <>
+                <Link
+                  variant="h6"
+                  underline="none"
+                  sx={{ ...rightLink, color: 'secondary.main' }}
+                  onClick={handleClickLogout}
+                  href=""
+                  component={NextLink}
+                >
+                  {'Logout'}
+                </Link>
+              </>
+            }
             <Link
               variant="h6"
               underline="none"

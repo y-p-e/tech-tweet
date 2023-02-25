@@ -11,10 +11,12 @@ from pydantic import BaseModel
 from const import TWITTER_CLIENT_ID, CLIENT_SECRET, TWITTER_TOKEN_URL, TWITTER_REDIRECT_URI, SCOPE, TWITTER_CURRENT_USER_URL, TWITTER_USER_PARAMS
 
 
-class TwitterCurentUserAccessToken(BaseModel):
+class CurentUser(BaseModel):
+    id: int
     name: str
-    access_token: str 
-    session_id: str 
+    session_id: str
+    first_default: int
+    second_default: int
 
 
 def get_twitter_current_user(access_token: str, session_id: str):
@@ -50,15 +52,21 @@ def get_twitter_current_user(access_token: str, session_id: str):
     res = requests.get(TWITTER_CURRENT_USER_URL, params=TWITTER_USER_PARAMS, headers=headers)
 
   data = res.json()
+  username = data['data']['username']
+  user_id = data['data']['id']
   name = data['data']['name']
+  profile_image_url = data['data']['profile_image_url']
+
 
   user.session_id = session_id
   user.refresh_token = refresh_token
   session.add(user)
   session.commit()
 
-  return TwitterCurentUserAccessToken(
-    name=name,
-    access_token=access_token,
-    session_id=session_id,
+  return CurentUser(
+    id=user.id,
+    name=user.username,
+    session_id=user.session_id,
+    first_default=user.first_default.category_id,
+    second_default=user.second_default.category_id,
 	)
