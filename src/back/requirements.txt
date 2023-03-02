@@ -9,3 +9,4 @@ cryptography
 python-dotenv
 requests_oauthlib
 python-dateutil
+schedule

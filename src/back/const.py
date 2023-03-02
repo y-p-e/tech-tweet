@@ -22,6 +22,8 @@ TWITTER_USER_PARAMS = {'user.fields': 'description', 'user.fields': 'profile_ima
 
 GOOGLE_PRIVATE_API_KEY = os.environ['GOOGLE_PRIVATE_API_KEY']
 
+API_KEY = os.environ['API_KEY']
+
 # Generate state
 state = hashlib.sha256(os.urandom(32)).hexdigest()
 code_verifier1 = base64.urlsafe_b64encode(os.urandom(30)).decode("utf-8")
