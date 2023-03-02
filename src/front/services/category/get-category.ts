@@ -7,7 +7,8 @@ const getCategory = async (context: ApiContext): Promise<Category[]> => {
 		{
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'access_token': process.env.API_KEY || '',
 			}
 		}
 	)

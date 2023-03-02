@@ -28,6 +28,7 @@ export const putFirstDefault = async (context: ApiContext, userId: string, categ
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
+				'access_token': process.env.API_KEY || '',
 			},
 			body: JSON.stringify({
 				category_id: categoryId
@@ -44,6 +45,7 @@ export const putSecondDefault = async (context: ApiContext, userId: string, cate
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
+				'access_token': process.env.API_KEY || '',
 			},
 			body: JSON.stringify({
 				category_id: categoryId

@@ -7,7 +7,8 @@ const getAuthUrl = async (context: ApiContext): Promise<AuthUrl> => {
 		{
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'access_token': process.env.API_KEY || '',
 			}
 		}
 	)
