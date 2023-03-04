@@ -12,6 +12,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import useSWR from 'swr'
 import { fetcher } from '../../../utils';
+import ImageListItem from '@mui/material/ImageListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 
 const item: SxProps<Theme> = {
   display: 'flex',
@@ -25,7 +27,8 @@ export type TweetNumberProps = {
   secondTweetNumber: number,
   setFirstTweetNumber: (tweetNumber: number) => void;
   setSecondTweetNumber: (tweetNumber: number) => void;
-  tweetMap: Map<number, Tweets>
+  tweetMap: Map<number, Tweets>;
+  bookMap: Map<number, Books[]>;
 }
 
 export type Tweet = {
@@ -38,8 +41,15 @@ export type Tweets = {
   tweets: Tweet[]
 }
 
+export type Books = {
+  img: string
+  title: string
+  descriptin: string
+  url: string
+}
+
 function ProductValues(props: TweetNumberProps) {
-  const {tweetMap, firstTweetNumber, secondTweetNumber, setFirstTweetNumber, setSecondTweetNumber} = props
+  const {tweetMap, bookMap, firstTweetNumber, secondTweetNumber, setFirstTweetNumber, setSecondTweetNumber} = props
   const { data } = useSWR('/api/current-user', fetcher)
   React.useEffect(() => {
     setFirstTweetNumber(data.firstDefault)
@@ -47,6 +57,10 @@ function ProductValues(props: TweetNumberProps) {
   }, [data])
   const firstTweet = tweetMap.get(firstTweetNumber)
   const secondTweet = tweetMap.get(secondTweetNumber)
+  const firstBooks = bookMap.get(firstTweetNumber) ?? []
+  const secondBooks = bookMap.get(firstTweetNumber) ?? []
+  let firstBookI = 0
+  let secondBookI = 0
   return (
     <Box
       component="section"
@@ -75,6 +89,68 @@ function ProductValues(props: TweetNumberProps) {
                     const regexp_url = /(http[s]?:\/\/)[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?/g;
                     const tweet_text = tweet.tweet.replace(regexp_url, '');
                     const url = match?.[0]
+                    if (id !== 0 && id % 5 === 0) {
+                      firstBookI = firstBookI === firstBooks.length ? 0 : firstBookI
+                      const firstBook = firstBooks[firstBookI]
+                      firstBookI += 1
+                      return (
+                        <>
+                        <ListItemButton sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                          <ImageListItem sx={{width: 150, mr: 4}}>
+                            <img
+                              src={firstBook.img}
+                              srcSet={`${firstBook.img} 2x`}
+                              alt={firstBook.title}
+                              loading="lazy"
+                            />
+                          </ImageListItem>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                sx={{display: 'inline', pb: 3 }}
+                                component="span"
+                                variant="body1"
+                                color="secondary.light"
+                              >
+                                {firstBook.title}
+                              </Typography>
+                            }
+                            secondary={
+                              <Typography
+                                sx={{display: 'inline' }}
+                                component="span"
+                                variant="body2"
+                                color="secondary.light"
+                              >
+                                {firstBook.descriptin}
+                              </Typography>
+                              
+                            }
+                          />
+                        </ListItemButton>
+                        <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                          <ListItemAvatar>
+                            <Avatar alt="Remy Sharp" src={tweet.profileImg} />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                sx={{ display: 'inline' }}
+                                component="span"
+                                variant="body1"
+                                color="secondary.light"
+                              >
+                                {tweet_text}
+                              </Typography>
+                            }
+                            secondary={
+                              <a href={url}>{url}</a>
+                            }
+                          />
+                        </ListItem>
+                        </>
+                      )
+                    }
                     return (
                       <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                         <ListItemAvatar>
@@ -123,6 +199,68 @@ function ProductValues(props: TweetNumberProps) {
                     const regexp_url = /(http[s]?:\/\/)[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?/g;
                     const tweet_text = tweet.tweet.replace(regexp_url, '');
                     const url = match?.[0]
+                    if (id !== 0 && id % 5 === 0) {
+                      secondBookI = secondBookI === secondBooks.length ? 0 : secondBookI
+                      const secondBook = secondBooks[secondBookI]
+                      secondBookI += 1
+                      return (
+                        <>
+                        <ListItemButton sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                          <ImageListItem sx={{width: 150, mr: 4}}>
+                            <img
+                              src={secondBook.img}
+                              srcSet={`${secondBook.img} 2x`}
+                              alt={secondBook.title}
+                              loading="lazy"
+                            />
+                          </ImageListItem>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                sx={{display: 'inline', pb: 3 }}
+                                component="span"
+                                variant="body1"
+                                color="secondary.light"
+                              >
+                                {secondBook.title}
+                              </Typography>
+                            }
+                            secondary={
+                              <Typography
+                                sx={{display: 'inline' }}
+                                component="span"
+                                variant="body2"
+                                color="secondary.light"
+                              >
+                                {secondBook.descriptin}
+                              </Typography>
+                              
+                            }
+                          />
+                        </ListItemButton>
+                        <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                          <ListItemAvatar>
+                            <Avatar alt="Remy Sharp" src={tweet.profileImg} />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                sx={{ display: 'inline' }}
+                                component="span"
+                                variant="body1"
+                                color="secondary.light"
+                              >
+                                {tweet_text}
+                              </Typography>
+                            }
+                            secondary={
+                              <a href={url}>{url}</a>
+                            }
+                          />
+                        </ListItem>
+                        </>
+                      )
+                    }
                     return (
                       <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                         <ListItemAvatar>

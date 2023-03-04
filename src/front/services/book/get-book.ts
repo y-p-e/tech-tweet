@@ -1,9 +1,9 @@
-import {ApiContext, TweetData} from '../../types/data'
+import {ApiContext, BookData} from '../../types/data'
 import { fetcher } from "../../utils";
 
-const getTweet = async (context: ApiContext): Promise<TweetData[]> => {
+const getBook = async (context: ApiContext): Promise<BookData[]> => {
 	return await fetcher(
-		`${context.apiRootUrl.replace(/\/$/g, '')}/tweets`,
+		`${context.apiRootUrl.replace(/\/$/g, '')}/books`,
 		{
 			headers: {
 				Accept: 'application/json',
@@ -14,4 +14,4 @@ const getTweet = async (context: ApiContext): Promise<TweetData[]> => {
 	)
 }
 
-export default getTweet
+export default getBook

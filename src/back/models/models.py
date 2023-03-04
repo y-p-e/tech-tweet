@@ -63,3 +63,13 @@ class SecondDefaultCategory(Base):
   id = Column(Integer, primary_key=True)
   user_id = Column(Integer, ForeignKey('user.id'), unique=True)
   category_id = Column(Integer, ForeignKey('category.id'))
+
+
+class Book(Base):
+  __tablename__ = "book"
+  id = Column(Integer, primary_key=True)
+  img = Column(String(1000), nullable=False)
+  title = Column(String(1000), nullable=False)
+  description = Column(String(1000), nullable=False)
+  url = Column(String(1000), nullable=False)
+  category_id = Column(Integer, ForeignKey('category.id'))

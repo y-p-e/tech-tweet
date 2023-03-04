@@ -45,3 +45,15 @@ export type TweetData = {
     },
   ]
 }
+
+export type BookData = {
+  category_id: number,
+  books: [
+    {
+      img: string
+      title: string
+      descriptin: string
+      url: string
+    },
+  ]
+}

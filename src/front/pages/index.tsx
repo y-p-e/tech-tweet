@@ -2,16 +2,18 @@ import type { NextPage } from 'next'
 import { useState } from 'react';
 import AppFooter from './modules/views/AppFooter';
 import ProductValues from './modules/views/ProductValues';
-import type {TweetNumberProps, Tweets, Tweet} from './modules/views/ProductValues';
+import type {TweetNumberProps, Tweets, Tweet, Books} from './modules/views/ProductValues';
 import AppAppBar from './modules/views/AppAppBar';
 import { GetServerSideProps } from 'next'
 import { SWRConfig } from 'swr';
 import getCategory from '../services/category/get-category';
-import { ApiContext, Category, TweetData } from '../types/data';
+import { ApiContext, Category, TweetData, BookData } from '../types/data';
 import getTweet from '../services/tweet/get-tweet';
+import getBook from '../services/book/get-book';
 
 type SSRProps = {
   tweet_datas: TweetData[],
+  book_datas: BookData[],
   category_datas: Category[],
   fallback: any
 }
@@ -36,12 +38,28 @@ const Home: NextPage<SSRProps> = (props) => {
     }
     tweetMap.set(tweetData.category_id, tweets)
   })
+
+  const bookMap = new Map<number, Books[]>();
+  props.book_datas.map((bookData, id) => {
+    const bookArr: Books[] = []
+    bookData.books.map((book) => {
+      const b: Books = {
+        img: book.img,
+        title: book.title,
+        descriptin: book.descriptin,
+        url: book.url,
+      }
+      bookArr.push(b)
+    })
+    bookMap.set(bookData.category_id, bookArr)
+  })
   const tweetNumberProps: TweetNumberProps = {
     firstTweetNumber,
     secondTweetNumber,
     setFirstTweetNumber,
     setSecondTweetNumber,
     tweetMap: tweetMap,
+    bookMap: bookMap,
   }
 
   const handleFirstTweetNumber = (tweetNumber: number) => {
@@ -74,10 +92,12 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async () => {
   }
   const tweeDatats = await getTweet(apiContext)
   const categoryDatats = await getCategory(apiContext)
+  const bookDatas = await getBook(apiContext)
 
   return {
     props: {
       tweet_datas: tweeDatats,
+      book_datas: bookDatas,
       category_datas: categoryDatats,
       fallback: {
         '/api/current-user': {

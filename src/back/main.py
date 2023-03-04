@@ -10,6 +10,8 @@ from category.save_category import save_tweet_category, CategoryData
 from category.get_categories import get_tweet_category, CategoryModel
 from twitter.get_tweets import get_translate_tweets, TweetCategoryModel
 from user.update_default_category import update_first_default_category, update_second_default_category, DeaultCategory
+from book.save_book import BookData, save_book_data
+from book.get_book import BookCategoryModel, get_book_data 
 from fastapi.security.api_key import APIKey
 
 app = FastAPI()
@@ -54,3 +56,11 @@ def update_first_category(user_id: int, session_id: str, deault_category: Deault
 @app.put("/users/{user_id}/second_default_category")
 def update_second_category(user_id: int, session_id: str, deault_category: DeaultCategory, api_key: APIKey = Depends(auth.get_api_key)):
   return update_second_default_category(user_id, session_id, deault_category)
+
+@app.get("/books")
+def get_book(api_key: APIKey = Depends(auth.get_api_key))->List[BookCategoryModel]:
+  return get_book_data()
+
+@app.post("/books", status_code=201)
+def save_book(book_data: BookData, api_key: APIKey = Depends(auth.get_api_key)):
+  return save_book_data(book_data)
