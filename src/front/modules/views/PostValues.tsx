@@ -28,7 +28,7 @@ const item: SxProps<Theme> = {
   px: 5,
 };
 
-function PostValues({posts}) {
+function PostValues({posts}: any) {
   return (
     <Box
       component="section"
@@ -50,7 +50,7 @@ function PostValues({posts}) {
                 }}
                 subheader={<li />}
               >
-                {posts.map((post) => (
+                {posts.map((post: any) => (
                   <Link key={post.slug} href={`/posts/${post.slug}`} component={NextLink}>
                     <ListItem sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                       <ListItemText primary={post.frontMatter.title} />

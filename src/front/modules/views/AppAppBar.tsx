@@ -17,12 +17,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Grid from '@mui/material/Grid';
 import Typography from '../components/Typography';
 import NextLink from 'next/link';
-import type {CategoryDataType} from '../../index'
+import { Category  as CategoryDataType} from '../../types/data';
 import Avatar from '@mui/material/Avatar';
-import {registDefaultCateogry} from '../../../services/category/regist-default';
+import {registDefaultCateogry} from '../../services/category/regist-default';
 import useSWR from 'swr'
-import { fetcher } from '../../../utils';
-import { logout } from '../../../services/auth/logout';
+import { fetcher } from '../../utils';
+import { logout } from '../../services/auth/logout';
 
 export interface SelectedListItemProps {
   category_datas: CategoryDataType[];

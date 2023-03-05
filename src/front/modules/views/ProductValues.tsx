@@ -11,7 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import useSWR from 'swr'
-import { fetcher } from '../../../utils';
+import { fetcher } from '../../utils';
 import ImageListItem from '@mui/material/ImageListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 

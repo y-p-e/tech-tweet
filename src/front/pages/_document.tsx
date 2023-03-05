@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import theme from './modules/theme';
-import createEmotionCache from './modules/createEmotionCache';
+import theme from '../modules/theme';
+import createEmotionCache from '../modules/createEmotionCache';
 import { DefaultSeo } from 'next-seo';
 
 export default class MyDocument extends Document {

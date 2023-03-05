@@ -1,9 +1,9 @@
 import fs from 'fs';
 import matter from 'gray-matter';
 import type { NextPage } from 'next'
-import AppFooter from '../modules/views/AppFooter';
-import PostContent from '../modules/views/PostContent';
-import AppAppBar from '../modules/views/AppAppBar';
+import AppFooter from '../../modules/views/AppFooter';
+import PostContent from '../../modules/views/PostContent';
+import AppAppBar from '../../modules/views/AppAppBar';
 
 export async function getStaticProps() {
   const file = fs.readFileSync(`privacy/privacy.md`, 'utf-8');
@@ -11,10 +11,15 @@ export async function getStaticProps() {
   return { props: { frontMatter: data, content } };
 }
 
-const Post: NextPage = ({ frontMatter, content }) => {
+const Post: NextPage = ({ frontMatter, content }: any) => {
   return (
     <>
-      <AppAppBar isShowMenuIcon={false}/>
+      <AppAppBar 
+      isShowMenuIcon={false}
+      category_datas={[]}
+      handleFirstTweetNumber={()=>{}}
+      handleSecondTweetNumber={()=>{}}
+      />
       <PostContent title={frontMatter.title} content={content} />
       <AppFooter />
     </>

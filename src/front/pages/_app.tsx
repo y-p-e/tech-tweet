@@ -3,8 +3,8 @@ import type { AppProps } from 'next/app'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import theme from './modules/theme';
-import createEmotionCache from './modules/createEmotionCache';
+import theme from '../modules/theme';
+import createEmotionCache from '../modules/createEmotionCache';
 import { DefaultSeo } from 'next-seo';
 
 const clientSideEmotionCache = createEmotionCache();

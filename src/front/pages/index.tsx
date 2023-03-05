@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 import { useState } from 'react';
-import AppFooter from './modules/views/AppFooter';
-import ProductValues from './modules/views/ProductValues';
-import type {TweetNumberProps, Tweets, Tweet, Books} from './modules/views/ProductValues';
-import AppAppBar from './modules/views/AppAppBar';
+import AppFooter from '../modules/views/AppFooter';
+import ProductValues from '../modules/views/ProductValues';
+import type {TweetNumberProps, Tweets, Tweet, Books} from '../modules/views/ProductValues';
+import AppAppBar from '../modules/views/AppAppBar';
 import { GetServerSideProps } from 'next'
 import { SWRConfig } from 'swr';
 import getCategory from '../services/category/get-category';
