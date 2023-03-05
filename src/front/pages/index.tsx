@@ -1,24 +1,23 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import { useState } from 'react';
 import AppFooter from '../modules/views/AppFooter';
 import ProductValues from '../modules/views/ProductValues';
 import type {TweetNumberProps, Tweets, Tweet, Books} from '../modules/views/ProductValues';
 import AppAppBar from '../modules/views/AppAppBar';
-import { GetServerSideProps } from 'next'
 import { SWRConfig } from 'swr';
 import getCategory from '../services/category/get-category';
 import { ApiContext, Category, TweetData, BookData } from '../types/data';
 import getTweet from '../services/tweet/get-tweet';
 import getBook from '../services/book/get-book';
 
-type SSRProps = {
+type SSGProps = {
   tweet_datas: TweetData[],
   book_datas: BookData[],
   category_datas: Category[],
   fallback: any
 }
 
-const Home: NextPage<SSRProps> = (props) => {
+const Home: NextPage<SSGProps> = (props) => {
   const fallback = props.fallback
   const [firstTweetNumber, setFirstTweetNumber] = useState(fallback['/api/current-user'].firstDefault)
   const [secondTweetNumber, setSecondTweetNumber] = useState(fallback['/api/current-user'].secondDefault)
@@ -86,7 +85,7 @@ const Home: NextPage<SSRProps> = (props) => {
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps<SSRProps> = async () => {
+export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   const apiContext: ApiContext = {
     apiRootUrl: process.env.API_BASE_URL || 'http://localhost:8000',
   }
@@ -108,5 +107,6 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async () => {
         }
       }
     },
+    revalidate: 14400
   }
 }
