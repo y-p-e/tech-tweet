@@ -272,15 +272,6 @@ function AppAppBar(props: AppAppBarProps) {
                 </Link>
               </>
             }
-            <Link
-              variant="h6"
-              underline="none"
-              sx={{ ...rightLink, color: 'secondary.main' }}
-              href="/posts"
-              component={NextLink}
-            >
-              {'Blog'}
-            </Link>
           </Box>
         </Toolbar>
       </AppBar>

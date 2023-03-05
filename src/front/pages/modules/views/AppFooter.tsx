@@ -38,13 +38,13 @@ export default function AppFooter() {
                 sx={{mr: 5 }}
                 component={NextLink}
                 >
-                {'免責事項'}
+                {'サイトマップ'}
               </Link>
               <Link
                 color="inherit"
                 variant="body1"
                 underline="none"
-                href="/"
+                href="/privacy"
                 component={NextLink}
               >
                 {'プライバシーポリシー'}
