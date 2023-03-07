@@ -34,16 +34,6 @@ export default function AppFooter() {
                 color="inherit"
                 variant="body1"
                 underline="none"
-                href="/"
-                sx={{mr: 5 }}
-                component={NextLink}
-                >
-                {'サイトマップ'}
-              </Link>
-              <Link
-                color="inherit"
-                variant="body1"
-                underline="none"
                 href="/privacy"
                 component={NextLink}
               >
