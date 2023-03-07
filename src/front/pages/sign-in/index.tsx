@@ -101,10 +101,19 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     }
   }
 
-  const authUrl = await getAuthUrl(apiContext)
-  return {
-    props: {
-      authUrl,
-    },
+  try{
+    const authUrl = await getAuthUrl(apiContext)
+    return {
+      props: {
+        authUrl,
+      },
+    }
+  }catch{
+    return {
+      props: {
+        authUrl: {auth_url: '/'},
+      },
+    }
+
   }
 }
