@@ -32,6 +32,7 @@ def save_tweet_user(tweet_user: TweetUserData):
 
   tweet_user = TweetUser()
   tweet_user.user_id = user_id
+  tweet_user.user_name = username
   tweet_user.profile_img_url = data[0]['profile_image_url']
   tweet_user.category_id = category.id
   session.add(tweet_user)

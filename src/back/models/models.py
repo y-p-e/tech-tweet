@@ -34,6 +34,7 @@ class TweetUser(Base):
     __tablename__ = "tweet_user"
     id = Column(Integer, primary_key=True)
     user_id = Column(String(255), nullable=False, unique=True)
+    user_name = Column(String(255), nullable=False, unique=True)
     profile_img_url = Column(String(255), nullable=False)
     category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
     tweets = relationship('Tweet', backref='tweet_user')
@@ -46,6 +47,7 @@ class Tweet(Base):
     tweet_en = Column(MEDIUMTEXT, nullable=False)
     tweet_ja = Column(MEDIUMTEXT, nullable=False)
     category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
+    tweet_url = Column(String(255), nullable=False)
     tweet_user_id = Column(Integer, ForeignKey('tweet_user.id'), nullable=False)
     tweeted_at = Column(DateTime, default=datetime.now, nullable=False)
 

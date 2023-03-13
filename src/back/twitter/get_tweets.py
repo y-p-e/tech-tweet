@@ -11,6 +11,7 @@ class TweetModel(BaseModel):
   tweet_id: int
   tweet_en: str
   tweet_ja: str
+  tweet_url: str
   profile_img_url: str
 
 
@@ -34,6 +35,7 @@ def get_translate_tweets():
 				tweet_id=tweet.tweet_id,
 				tweet_en=tweet.tweet_en,
 				tweet_ja=tweet.tweet_ja,
+				tweet_url=tweet.tweet_url,
 				profile_img_url=tweet.tweet_user.profile_img_url
 			)
 			tweet_list.append(tweet_model)

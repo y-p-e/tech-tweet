@@ -21,6 +21,7 @@ def save_translate_tweets():
       tweet.category_id = tweet_user.category_id
       tweet.tweet_user_id = tweet_user.id
       tweet.tweeted_at = parse(data["created_at"])
+      tweet.tweet_url = f"https://twitter.com/{tweet_user.user_name}/status/{tweet.tweet_id}"
 
 			# すでに登録済みの場合は次の処理
       regist_tweet = session.query(Tweet).filter(Tweet.tweet_id == tweet.tweet_id).one_or_none()
