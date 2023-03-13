@@ -34,7 +34,6 @@ class TweetUser(Base):
     __tablename__ = "tweet_user"
     id = Column(Integer, primary_key=True)
     user_id = Column(String(255), nullable=False, unique=True)
-    url =  Column(String(255), nullable=False)
     profile_img_url = Column(String(255), nullable=False)
     category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
     tweets = relationship('Tweet', backref='tweet_user')

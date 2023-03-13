@@ -13,6 +13,7 @@ from user.update_default_category import update_first_default_category, update_s
 from book.save_book import BookData, save_book_data
 from book.get_book import BookCategoryModel, get_book_data 
 from fastapi.security.api_key import APIKey
+from twitter.insert_user_from_csv import insert_user_from_csv
 
 app = FastAPI()
 
@@ -40,6 +41,10 @@ def save_category(category_data: CategoryData, api_key: APIKey = Depends(auth.ge
 def save_user(tweet_user: TweetUserData, api_key: APIKey = Depends(auth.get_api_key)):
   user_id = save_tweet_user(tweet_user)
   return {"user_id": user_id}
+
+@app.post("/tweet_users_from_csv", status_code=201)
+def save_user_from_csv(api_key: APIKey = Depends(auth.get_api_key)):
+  return insert_user_from_csv()
 
 @app.get("/tweets")
 def get_tweets(api_key: APIKey = Depends(auth.get_api_key))->List[TweetCategoryModel]:

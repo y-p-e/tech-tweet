@@ -8,11 +8,11 @@ from const import BEARER_TOKEN
 
 class TweetUserData(BaseModel):
     username: str #Twitterアカウントの@の後の文字列
-    category_name: str
+    category_id: int
 
 
 def save_tweet_user(tweet_user: TweetUserData):
-  category = session.query(Category).filter(Category.name == tweet_user.category_name).one_or_none()
+  category = session.query(Category).filter(Category.id == tweet_user.category_id).one_or_none()
   if not category:
     raise HTTPException(status_code=404, detail="Category not found")
 
@@ -32,7 +32,6 @@ def save_tweet_user(tweet_user: TweetUserData):
 
   tweet_user = TweetUser()
   tweet_user.user_id = user_id
-  tweet_user.url = data[0]['url']
   tweet_user.profile_img_url = data[0]['profile_image_url']
   tweet_user.category_id = category.id
   session.add(tweet_user)

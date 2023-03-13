@@ -21,16 +21,16 @@ class BookCategoryModel(BaseModel):
 
 def get_book_data():
   categories = session.query(Category).order_by(Category.id).all()
+  books = session.query(Book).all()
+  book_list = []
+  for book in books:
+    book_model = BookModel.from_orm(book)
+    book_list.append(book_model)
+
   book_dict = {}
   response_list = []
   for category in categories:
     book_dict[category.id] = []
-    books = session.query(Book).filter(Book.category_id == category.id).all()
-    book_list = []
-    for book in books:
-      book_model = BookModel.from_orm(book)
-      book_list.append(book_model)
-
     random.shuffle(book_list)
     book_category_model = BookCategoryModel(
       category_id=category.id,

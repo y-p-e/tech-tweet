@@ -58,7 +58,7 @@ function ProductValues(props: TweetNumberProps) {
   const firstTweet = tweetMap.get(firstTweetNumber)
   const secondTweet = tweetMap.get(secondTweetNumber)
   const firstBooks = bookMap.get(firstTweetNumber) ?? []
-  const secondBooks = bookMap.get(firstTweetNumber) ?? []
+  const secondBooks = bookMap.get(secondTweetNumber) ?? []
   let firstBookI = 0
   let secondBookI = 0
   return (
@@ -95,7 +95,7 @@ function ProductValues(props: TweetNumberProps) {
                       firstBookI += 1
                       return (
                         <>
-                        <ListItemButton sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                        <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                           <ImageListItem sx={{width: 150, mr: 4}}>
                             <img
                               src={firstBook.img}
@@ -205,7 +205,7 @@ function ProductValues(props: TweetNumberProps) {
                       secondBookI += 1
                       return (
                         <>
-                        <ListItemButton sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                        <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                           <ImageListItem sx={{width: 150, mr: 4}}>
                             <img
                               src={secondBook.img}
