@@ -5,7 +5,6 @@ from pydantic import BaseModel
 from typing import List
 from sqlalchemy import desc
 
-
 class TweetModel(BaseModel):
   id: int
   tweet_id: int
@@ -13,6 +12,7 @@ class TweetModel(BaseModel):
   tweet_ja: str
   tweet_url: str
   profile_img_url: str
+  tweeted_at: str
 
 
 class TweetCategoryModel(BaseModel):
@@ -36,7 +36,8 @@ def get_translate_tweets():
 				tweet_en=tweet.tweet_en,
 				tweet_ja=tweet.tweet_ja,
 				tweet_url=tweet.tweet_url,
-				profile_img_url=tweet.tweet_user.profile_img_url
+				profile_img_url=tweet.tweet_user.profile_img_url,
+				tweeted_at=tweet.tweeted_at.strftime('%Y/%m/%d %H:%M:%S')
 			)
 			tweet_list.append(tweet_model)
 			# tweet_dict[category.id].append(tweet_model)

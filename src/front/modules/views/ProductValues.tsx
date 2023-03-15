@@ -34,6 +34,7 @@ export type TweetNumberProps = {
 export type Tweet = {
   profileImg: string
   tweet: string
+  tweetedAt: string
 }
 
 export type Tweets = {
@@ -94,7 +95,7 @@ function ProductValues(props: TweetNumberProps) {
                       const firstBook = firstBooks[firstBookI]
                       firstBookI += 1
                       return (
-                        <>
+                        <div key={id}>
                         <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                           <ImageListItem sx={{width: 150, mr: 4}}>
                             <img
@@ -128,6 +129,20 @@ function ProductValues(props: TweetNumberProps) {
                             }
                           />
                         </ListItemButton>
+                        <ListItem>
+                        <ListItemText
+                              primary={
+                                <Typography
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body1"
+                                  color="secondary.light"
+                                >
+                                  {tweet.tweetedAt}
+                                </Typography>
+                              }
+                            />
+                        </ListItem>
                         <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                           <ListItemAvatar>
                             <Avatar alt="Remy Sharp" src={tweet.profileImg} />
@@ -148,10 +163,25 @@ function ProductValues(props: TweetNumberProps) {
                             }
                           />
                         </ListItem>
-                        </>
+                        </div>
                       )
                     }
                     return (
+                    <div key={id}>
+                    <ListItem>
+                    <ListItemText
+                          primary={
+                            <Typography
+                              sx={{ display: 'inline' }}
+                              component="span"
+                              variant="body1"
+                              color="secondary.light"
+                            >
+                              {tweet.tweetedAt}
+                            </Typography>
+                          }
+                        />
+                    </ListItem>
                       <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                         <ListItemAvatar>
                           <Avatar alt="Remy Sharp" src={tweet.profileImg} />
@@ -172,6 +202,7 @@ function ProductValues(props: TweetNumberProps) {
                           }
                         />
                       </ListItem>
+                    </div>
                     )
                   })}
                 </ul>
@@ -204,7 +235,7 @@ function ProductValues(props: TweetNumberProps) {
                       const secondBook = secondBooks[secondBookI]
                       secondBookI += 1
                       return (
-                        <>
+                        <div key={id}>
                         <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                           <ImageListItem sx={{width: 150, mr: 4}}>
                             <img
@@ -238,6 +269,20 @@ function ProductValues(props: TweetNumberProps) {
                             }
                           />
                         </ListItemButton>
+                        <ListItem>
+                        <ListItemText
+                              primary={
+                                <Typography
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body1"
+                                  color="secondary.light"
+                                >
+                                  {tweet.tweetedAt}
+                                </Typography>
+                              }
+                            />
+                        </ListItem>
                         <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                           <ListItemAvatar>
                             <Avatar alt="Remy Sharp" src={tweet.profileImg} />
@@ -258,10 +303,25 @@ function ProductValues(props: TweetNumberProps) {
                             }
                           />
                         </ListItem>
-                        </>
+                        </div>
                       )
                     }
                     return (
+                      <div key={id}>
+                      <ListItem>
+                      <ListItemText
+                        primary={
+                          <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body1"
+                            color="secondary.light"
+                          >
+                            {tweet.tweetedAt}
+                          </Typography>
+                        }
+                      />
+                      </ListItem>
                       <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                         <ListItemAvatar>
                           <Avatar alt="Remy Sharp" src={tweet.profileImg} />
@@ -282,6 +342,7 @@ function ProductValues(props: TweetNumberProps) {
                           }
                         />
                       </ListItem>
+                      </div>
                     )
                   }
                   )}

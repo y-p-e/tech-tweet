@@ -41,7 +41,8 @@ export type TweetData = {
       tweet_id: number,
       tweet_en: string,
       tweet_ja: string,
-      profile_img_url: string
+      profile_img_url: string,
+      tweeted_at: string
     },
   ]
 }
