@@ -5,8 +5,7 @@ import requests
 from fastapi import HTTPException, status
 from requests_oauthlib import OAuth2Session
 from requests.auth import HTTPBasicAuth
-from models.models import User
-from database import session
+from models.models import User, FirstDefaultCategory, SecondDefaultCategory
 from pydantic import BaseModel
 from const import TWITTER_CLIENT_ID, CLIENT_SECRET, TWITTER_TOKEN_URL, TWITTER_REDIRECT_URI, SCOPE, TWITTER_CURRENT_USER_URL, TWITTER_USER_PARAMS
 
@@ -19,7 +18,7 @@ class CurentUser(BaseModel):
     second_default: int
 
 
-def get_twitter_current_user(access_token: str, session_id: str):
+def get_twitter_current_user(access_token: str, session_id: str, session):
   twitter = OAuth2Session(TWITTER_CLIENT_ID, redirect_uri=TWITTER_REDIRECT_URI, scope=SCOPE)
   for _ in range(100):
     session_id = secrets.token_urlsafe(16)
@@ -63,10 +62,13 @@ def get_twitter_current_user(access_token: str, session_id: str):
   session.add(user)
   session.commit()
 
+  first_default = session.query(FirstDefaultCategory).filter(FirstDefaultCategory.user_id == user.id).first()
+  second_default = session.query(SecondDefaultCategory).filter(SecondDefaultCategory.user_id == user.id).first()
+
   return CurentUser(
     id=user.id,
     name=user.username,
     session_id=user.session_id,
-    first_default=user.first_default.category_id,
-    second_default=user.second_default.category_id,
+    first_default=first_default.category_id,
+    second_default=second_default.category_id,
 	)

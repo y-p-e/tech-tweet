@@ -1,5 +1,4 @@
 from models.models import Book, Category
-from database import session
 from pydantic import BaseModel
 from typing import List
 import random
@@ -19,7 +18,7 @@ class BookCategoryModel(BaseModel):
   books: List[BookModel]
 
 
-def get_book_data():
+def get_book_data(session):
   categories = session.query(Category).order_by(Category.id).all()
   books = session.query(Book).all()
   book_list = []

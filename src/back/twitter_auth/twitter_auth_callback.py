@@ -2,7 +2,6 @@ import secrets
 from requests_oauthlib import OAuth2Session
 import requests
 from models.models import User, FirstDefaultCategory, SecondDefaultCategory
-from database import session
 from pydantic import BaseModel
 from const import TWITTER_CLIENT_ID, CLIENT_SECRET, TWITTER_TOKEN_URL, TWITTER_REDIRECT_URI, SCOPE, TWITTER_CURRENT_USER_URL, TWITTER_USER_PARAMS, code_verifier
 from twitter_auth.get_twitter_current_user import CurentUser
@@ -12,7 +11,7 @@ class TwitterAccessToken(BaseModel):
     session_id: str 
 
 
-def twitter_auth_callback(code: str):
+def twitter_auth_callback(code: str, session):
   twitter = OAuth2Session(TWITTER_CLIENT_ID, redirect_uri=TWITTER_REDIRECT_URI, scope=SCOPE)
   token = twitter.fetch_token(
     token_url=TWITTER_TOKEN_URL,
@@ -46,19 +45,36 @@ def twitter_auth_callback(code: str):
       profile_image_url = profile_image_url,
       session_id = session_id,
       refresh_token = refresh_token,
-      first_default = FirstDefaultCategory(category_id=1),
-      second_default = SecondDefaultCategory(category_id=2),
     )
     session.add(user)
     session.flush()
+    first_default = FirstDefaultCategory(
+      user_id=user.id,
+      category_id=1
+    )
+    session.add(first_default)
+
+    second_default = SecondDefaultCategory(
+      user_id=user.id,
+      category_id=1
+    )
+    session.add(second_default)
     session.commit()
-  print(user)
-  print(user.id)
-  print(user.first_default.category_id)
+  else:
+    user.name = name
+    user.profile_image_url = profile_image_url
+    user.session_id = session_id
+    user.refresh_token = refresh_token
+    session.add(user)
+    session.commit()
+
+    first_default = session.query(FirstDefaultCategory).filter(FirstDefaultCategory.user_id == user.id).first()
+    second_default = session.query(SecondDefaultCategory).filter(SecondDefaultCategory.user_id == user.id).first()
+
   return CurentUser(
     id=user.id,
     name=user.username,
     session_id=user.session_id,
-    first_default=user.first_default.category_id,
-    second_default=user.second_default.category_id,
+    first_default=first_default.category_id,
+    second_default=second_default.category_id,
 	)

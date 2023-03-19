@@ -1,5 +1,4 @@
 from models.models import Book, Category
-from database import session
 from pydantic import BaseModel
 from fastapi import HTTPException
 
@@ -11,7 +10,7 @@ class BookData(BaseModel):
     category_name: str
 
 
-def save_book_data(book_data: BookData):
+def save_book_data(book_data: BookData, session):
   category = session.query(Category).filter(Category.name == book_data.category_name).one_or_none()
   if not category:
     raise HTTPException(status_code=404, detail="Category not found")

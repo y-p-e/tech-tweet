@@ -1,5 +1,4 @@
 from models.models import Category
-from database import session
 from pydantic import BaseModel
 from typing import List
 
@@ -16,7 +15,7 @@ class CategoryListModel(BaseModel):
   categories: List[CategoryModel]
 
 
-def get_tweet_category():
+def get_tweet_category(session):
   categories = session.query(Category).all()
   category_list = CategoryListModel(categories=categories)
   return category_list.categories

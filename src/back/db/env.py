@@ -20,6 +20,7 @@ PASSWORD = os.environ['MYSQL_PASSWORD']
 HOST = os.environ['MYSQL_HOST']
 PORT = "3306"
 DB_NAME = os.environ['MYSQL_DATABASE']
+MYSQL_ATTR_SSL_CA = os.environ['MYSQL_ATTR_SSL_CA']
 
 DATABASE_URL = "{}://{}:{}@{}:{}/{}".format(
     DATABASE, USER, PASSWORD, HOST, PORT, DB_NAME
@@ -83,6 +84,11 @@ def run_migrations_online() -> None:
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        connect_args={
+        "ssl": {
+            "ssl_ca": MYSQL_ATTR_SSL_CA
+            }
+        }
     )
 
     with connectable.connect() as connection:

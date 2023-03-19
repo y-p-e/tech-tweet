@@ -1,5 +1,4 @@
 from models.models import FirstDefaultCategory, SecondDefaultCategory, Category, User
-from database import session
 from pydantic import BaseModel
 from fastapi import HTTPException
 
@@ -8,7 +7,7 @@ class DeaultCategory(BaseModel):
     category_id: int
 
 
-def update_first_default_category(user_id, session_id, default_category: DeaultCategory):
+def update_first_default_category(user_id, session_id, default_category: DeaultCategory, session):
   category = session.query(Category).filter(Category.id == int(default_category.category_id)).one_or_none()
   if not category:
     raise HTTPException(status_code=404, detail="Category not found")
@@ -21,7 +20,7 @@ def update_first_default_category(user_id, session_id, default_category: DeaultC
   first_default_category.category_id = default_category.category_id
   session.commit()
 
-def update_second_default_category(user_id, session_id, default_category: DeaultCategory):
+def update_second_default_category(user_id, session_id, default_category: DeaultCategory, session):
   category = session.query(Category).filter(Category.id == default_category.category_id).one_or_none()
   if not category:
     raise HTTPException(status_code=404, detail="Category not found")

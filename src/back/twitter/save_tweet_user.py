@@ -1,7 +1,6 @@
 from fastapi import HTTPException
 import requests
 from models.models import Category, TweetUser
-from database import session
 from pydantic import BaseModel
 from const import BEARER_TOKEN
 
@@ -11,7 +10,7 @@ class TweetUserData(BaseModel):
     category_id: int
 
 
-def save_tweet_user(tweet_user: TweetUserData):
+def save_tweet_user(tweet_user: TweetUserData, session):
   category = session.query(Category).filter(Category.id == tweet_user.category_id).one_or_none()
   if not category:
     raise HTTPException(status_code=404, detail="Category not found")

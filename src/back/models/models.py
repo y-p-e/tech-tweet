@@ -18,16 +18,12 @@ class User(Base):
     created_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP'))
     updated_at = Column(DateTime, default=datetime.now, server_default=text('CURRENT_TIMESTAMP'), server_onupdate=text('CURRENT_TIMESTAMP'))
 
-    first_default = relationship("FirstDefaultCategory", uselist=False)
-    second_default = relationship("SecondDefaultCategory", uselist=False)
-
 
 class Category(Base):
     __tablename__ = "category"
     id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False, unique=True)
     img_url = Column(String(255), nullable=False)
-    users = relationship('TweetUser', backref='category')
 	
 
 class TweetUser(Base):
@@ -36,8 +32,7 @@ class TweetUser(Base):
     user_id = Column(String(255), nullable=False, unique=True)
     user_name = Column(String(255), nullable=False, unique=True)
     profile_img_url = Column(String(255), nullable=False)
-    category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
-    tweets = relationship('Tweet', backref='tweet_user')
+    category_id = Column(Integer, nullable=False)
 
 
 class Tweet(Base):
@@ -46,24 +41,24 @@ class Tweet(Base):
     tweet_id = Column(String(255), nullable=False, unique=True)
     tweet_en = Column(MEDIUMTEXT, nullable=False)
     tweet_ja = Column(MEDIUMTEXT, nullable=False)
-    category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
+    category_id = Column(Integer, nullable=False)
     tweet_url = Column(String(255), nullable=False)
-    tweet_user_id = Column(Integer, ForeignKey('tweet_user.id'), nullable=False)
+    tweet_user_id = Column(Integer, nullable=False)
     tweeted_at = Column(DateTime, default=datetime.now, nullable=False)
 
 
 class FirstDefaultCategory(Base):
   __tablename__ = "first_default_category"
   id = Column(Integer, primary_key=True)
-  user_id = Column(Integer, ForeignKey('user.id'), unique=True)
-  category_id = Column(Integer, ForeignKey('category.id'))
+  user_id = Column(Integer, unique=True)
+  category_id = Column(Integer)
 
 
 class SecondDefaultCategory(Base):
   __tablename__ = "second_default_category"
   id = Column(Integer, primary_key=True)
-  user_id = Column(Integer, ForeignKey('user.id'), unique=True)
-  category_id = Column(Integer, ForeignKey('category.id'))
+  user_id = Column(Integer, unique=True)
+  category_id = Column(Integer)
 
 
 class Book(Base):

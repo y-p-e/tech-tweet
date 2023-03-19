@@ -1,11 +1,10 @@
 import json
 import requests
 from models.models import TweetUser, Tweet
-from database import session
 from const import BEARER_TOKEN, GOOGLE_PRIVATE_API_KEY
 from dateutil.parser import parse
 
-def save_translate_tweets():
+def save_translate_tweets(session):
   tweet_users = session.query(TweetUser).all()
   for tweet_user in tweet_users:
     url = "https://api.twitter.com/2/users/{}/tweets?tweet.fields=created_at&max_results=5".format(tweet_user.user_id)
