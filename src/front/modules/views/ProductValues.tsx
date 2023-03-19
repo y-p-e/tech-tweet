@@ -14,6 +14,7 @@ import useSWR from 'swr'
 import { fetcher } from '../../utils';
 import ImageListItem from '@mui/material/ImageListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import Link from '@mui/material/Link';
 
 const item: SxProps<Theme> = {
   display: 'flex',
@@ -35,6 +36,7 @@ export type Tweet = {
   profileImg: string
   tweet: string
   tweetedAt: string
+  url: string
 }
 
 export type Tweets = {
@@ -96,39 +98,41 @@ function ProductValues(props: TweetNumberProps) {
                       firstBookI += 1
                       return (
                         <div key={id}>
-                        <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
-                          <ImageListItem sx={{width: 150, mr: 4}}>
-                            <img
-                              src={firstBook.img}
-                              srcSet={`${firstBook.img} 2x`}
-                              alt={firstBook.title}
-                              loading="lazy"
+                         <Link href={firstBook.url} target="_blank">
+                          <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                            <ImageListItem sx={{width: 150, mr: 4}}>
+                              <img
+                                src={firstBook.img}
+                                srcSet={`${firstBook.img} 2x`}
+                                alt={firstBook.title}
+                                loading="lazy"
+                              />
+                            </ImageListItem>
+                            <ListItemText
+                              primary={
+                                <Typography
+                                  sx={{display: 'inline', pb: 3 }}
+                                  component="span"
+                                  variant="body1"
+                                  color="secondary.light"
+                                >
+                                  {firstBook.title}
+                                </Typography>
+                              }
+                              secondary={
+                                <Typography
+                                  sx={{display: 'inline' }}
+                                  component="span"
+                                  variant="body2"
+                                  color="secondary.light"
+                                >
+                                  {firstBook.descriptin}
+                                </Typography>
+                                
+                              }
                             />
-                          </ImageListItem>
-                          <ListItemText
-                            primary={
-                              <Typography
-                                sx={{display: 'inline', pb: 3 }}
-                                component="span"
-                                variant="body1"
-                                color="secondary.light"
-                              >
-                                {firstBook.title}
-                              </Typography>
-                            }
-                            secondary={
-                              <Typography
-                                sx={{display: 'inline' }}
-                                component="span"
-                                variant="body2"
-                                color="secondary.light"
-                              >
-                                {firstBook.descriptin}
-                              </Typography>
-                              
-                            }
-                          />
-                        </ListItemButton>
+                          </ListItemButton>
+                         </Link>
                         <ListItem>
                         <ListItemText
                               primary={
@@ -143,26 +147,25 @@ function ProductValues(props: TweetNumberProps) {
                               }
                             />
                         </ListItem>
-                        <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
-                          <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src={tweet.profileImg} />
-                          </ListItemAvatar>
-                          <ListItemText
-                            primary={
-                              <Typography
-                                sx={{ display: 'inline' }}
-                                component="span"
-                                variant="body1"
-                                color="secondary.light"
-                              >
-                                {tweet_text}
-                              </Typography>
-                            }
-                            secondary={
-                              <a href={url}>{url}</a>
-                            }
-                          />
-                        </ListItem>
+                        <Link href={tweet.url} target="_blank">
+                          <ListItemButton key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                            <ListItemAvatar>
+                              <Avatar alt="Remy Sharp" src={tweet.profileImg} />
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={
+                                <Typography
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body1"
+                                  color="secondary.light"
+                                >
+                                  {tweet.tweet}
+                                </Typography>
+                              }
+                            />
+                          </ListItemButton>
+                        </Link>
                         </div>
                       )
                     }
@@ -182,7 +185,8 @@ function ProductValues(props: TweetNumberProps) {
                           }
                         />
                     </ListItem>
-                      <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                    <Link href={tweet.url} target="_blank">
+                      <ListItemButton key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
                         <ListItemAvatar>
                           <Avatar alt="Remy Sharp" src={tweet.profileImg} />
                         </ListItemAvatar>
@@ -194,14 +198,12 @@ function ProductValues(props: TweetNumberProps) {
                               variant="body1"
                               color="secondary.light"
                             >
-                              {tweet_text}
+                              {tweet.tweet}
                             </Typography>
                           }
-                          secondary={
-                            <a href={url}>{url}</a>
-                          }
                         />
-                      </ListItem>
+                      </ListItemButton>
+                    </Link>
                     </div>
                     )
                   })}
@@ -236,39 +238,41 @@ function ProductValues(props: TweetNumberProps) {
                       secondBookI += 1
                       return (
                         <div key={id}>
-                        <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
-                          <ImageListItem sx={{width: 150, mr: 4}}>
-                            <img
-                              src={secondBook.img}
-                              srcSet={`${secondBook.img} 2x`}
-                              alt={secondBook.title}
-                              loading="lazy"
+                        <Link href={secondBook.url} target="_blank">
+                          <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                            <ImageListItem sx={{width: 150, mr: 4}}>
+                              <img
+                                src={secondBook.img}
+                                srcSet={`${secondBook.img} 2x`}
+                                alt={secondBook.title}
+                                loading="lazy"
+                              />
+                            </ImageListItem>
+                            <ListItemText
+                              primary={
+                                <Typography
+                                  sx={{display: 'inline', pb: 3 }}
+                                  component="span"
+                                  variant="body1"
+                                  color="secondary.light"
+                                >
+                                  {secondBook.title}
+                                </Typography>
+                              }
+                              secondary={
+                                <Typography
+                                  sx={{display: 'inline' }}
+                                  component="span"
+                                  variant="body2"
+                                  color="secondary.light"
+                                >
+                                  {secondBook.descriptin}
+                                </Typography>
+                                
+                              }
                             />
-                          </ImageListItem>
-                          <ListItemText
-                            primary={
-                              <Typography
-                                sx={{display: 'inline', pb: 3 }}
-                                component="span"
-                                variant="body1"
-                                color="secondary.light"
-                              >
-                                {secondBook.title}
-                              </Typography>
-                            }
-                            secondary={
-                              <Typography
-                                sx={{display: 'inline' }}
-                                component="span"
-                                variant="body2"
-                                color="secondary.light"
-                              >
-                                {secondBook.descriptin}
-                              </Typography>
-                              
-                            }
-                          />
-                        </ListItemButton>
+                          </ListItemButton>
+                        </Link>
                         <ListItem>
                         <ListItemText
                               primary={
@@ -283,26 +287,25 @@ function ProductValues(props: TweetNumberProps) {
                               }
                             />
                         </ListItem>
-                        <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
-                          <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src={tweet.profileImg} />
-                          </ListItemAvatar>
-                          <ListItemText
-                            primary={
-                              <Typography
-                                sx={{ display: 'inline' }}
-                                component="span"
-                                variant="body1"
-                                color="secondary.light"
-                              >
-                                {tweet_text}
-                              </Typography>
-                            }
-                            secondary={
-                              <a href={url}>{url}</a>
-                            }
-                          />
-                        </ListItem>
+                        <Link href={tweet.url} target="_blank">
+                          <ListItemButton key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                            <ListItemAvatar>
+                              <Avatar alt="Remy Sharp" src={tweet.profileImg} />
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={
+                                <Typography
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body1"
+                                  color="secondary.light"
+                                >
+                                  {tweet.tweet}
+                                </Typography>
+                              }
+                            />
+                          </ListItemButton>
+                        </Link>
                         </div>
                       )
                     }
@@ -322,26 +325,25 @@ function ProductValues(props: TweetNumberProps) {
                         }
                       />
                       </ListItem>
-                      <ListItem key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
-                        <ListItemAvatar>
-                          <Avatar alt="Remy Sharp" src={tweet.profileImg} />
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Typography
-                              sx={{ display: 'inline' }}
-                              component="span"
-                              variant="body1"
-                              color="secondary.light"
-                            >
-                              {tweet.tweet}
-                            </Typography>
-                          }
-                          secondary={
-                            <a href={url}>{url}</a>
-                          }
-                        />
-                      </ListItem>
+                      <Link href={tweet.url} target="_blank">
+                        <ListItemButton key={`item-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
+                          <ListItemAvatar>
+                            <Avatar alt="Remy Sharp" src={tweet.profileImg} />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                sx={{ display: 'inline' }}
+                                component="span"
+                                variant="body1"
+                                color="secondary.light"
+                              >
+                                {tweet.tweet}
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                      </Link>
                       </div>
                     )
                   }

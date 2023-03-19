@@ -31,6 +31,7 @@ const Home: NextPage<SSGProps> = (props) => {
           profileImg: tweet.profile_img_url,
           tweet: tweet.tweet_ja,
           tweetedAt: tweet.tweeted_at,
+          url: tweet.tweet_url,
         }
         tweetArr.push(t)
       })
