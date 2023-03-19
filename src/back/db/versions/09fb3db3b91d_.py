@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 67e9786a17a9
+Revision ID: 09fb3db3b91d
 Revises: 
-Create Date: 2023-03-12 12:40:52.824844
+Create Date: 2023-03-19 04:54:43.299643
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = '67e9786a17a9'
+revision = '09fb3db3b91d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -67,12 +67,13 @@ def upgrade() -> None:
     op.create_table('tweet_user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.String(length=255), nullable=False),
-    sa.Column('url', sa.String(length=255), nullable=False),
+    sa.Column('user_name', sa.String(length=255), nullable=False),
     sa.Column('profile_img_url', sa.String(length=255), nullable=False),
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('user_id')
+    sa.UniqueConstraint('user_id'),
+    sa.UniqueConstraint('user_name')
     )
     op.create_table('tweet',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -80,6 +81,7 @@ def upgrade() -> None:
     sa.Column('tweet_en', mysql.MEDIUMTEXT(), nullable=False),
     sa.Column('tweet_ja', mysql.MEDIUMTEXT(), nullable=False),
     sa.Column('category_id', sa.Integer(), nullable=False),
+    sa.Column('tweet_url', sa.String(length=255), nullable=False),
     sa.Column('tweet_user_id', sa.Integer(), nullable=False),
     sa.Column('tweeted_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),

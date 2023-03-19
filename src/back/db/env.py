@@ -17,9 +17,9 @@ DATABASE = "mysql+pymysql"
 
 USER = os.environ['MYSQL_USER']
 PASSWORD = os.environ['MYSQL_PASSWORD']
-HOST = "mysql"
+HOST = os.environ['MYSQL_HOST']
 PORT = "3306"
-DB_NAME = "db"
+DB_NAME = os.environ['MYSQL_DATABASE']
 
 DATABASE_URL = "{}://{}:{}@{}:{}/{}".format(
     DATABASE, USER, PASSWORD, HOST, PORT, DB_NAME
