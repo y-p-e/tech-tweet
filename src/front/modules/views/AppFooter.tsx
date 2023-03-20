@@ -25,10 +25,10 @@ export default function AppFooter() {
     >
       <Container sx={{ display: 'flex' }}>
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item xs={6}>
             <Copyright />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={6}>
             <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end'}}>
               <Link
                 color="inherit"

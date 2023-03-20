@@ -20,7 +20,7 @@ const item: SxProps<Theme> = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  px: 5,
+  px: { xs: 0, md: 5 },
 };
 
 export type TweetNumberProps = {
@@ -71,17 +71,17 @@ function ProductValues(props: TweetNumberProps) {
     >
       <Container sx={{display: 'flex', position: 'relative', '& ::-webkit-scrollbar': {display: "none"}}} maxWidth="xl">
         <Grid container spacing={1} >
-          <Grid item xs={12} md={6} sx={{ borderRight: 1}}>
+          <Grid item xs={12} md={6} sx={{ borderRight: { xs: 0, md: 1 }}}>
             <Box sx={item}>
-              <Avatar src={firstTweet?.img} sx={{position: "fixed", width: 80, height: 80, zIndex: 1, mt: 1}} />
-              <Box sx={{height: "100px"}}/>
+            <Avatar src={firstTweet?.img} sx={{display: { xs: 'none', md: 'block' }, position: "fixed", width: 80, height: 80, zIndex: 1, mt: 1}} />
+              <Box sx={{height: { xs: "10px", md: "100px" }}}/>
               <List
                 sx={{
                   width: '100%',
                   bgcolor: 'primary.dark',
                   position: 'relative',
                   overflow: 'auto',
-                  maxHeight: 'calc(100vh - 250px)',
+                  maxHeight: { xs: 'calc(100vh)', md: 'calc(100vh - 250px)' },
                   '& ul': { padding: 0 },
                 }}
                 subheader={<li />}
