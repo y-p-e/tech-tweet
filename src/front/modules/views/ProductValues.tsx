@@ -80,7 +80,8 @@ function ProductValues(props: TweetNumberProps) {
                   width: '100%',
                   bgcolor: 'primary.dark',
                   position: 'relative',
-                  overflow: 'auto',
+                  overflowX: 'hidden',
+                  overflowY: 'auto',
                   maxHeight: { xs: 'calc(100vh)', md: 'calc(100vh - 250px)' },
                   '& ul': { padding: 0 },
                 }}
@@ -100,7 +101,7 @@ function ProductValues(props: TweetNumberProps) {
                         <div key={id}>
                          <Link href={firstBook.url} target="_blank">
                           <ListItemButton key={`book-${id}`} sx={{color: "secondary.light", borderBottom: "1px solid #ccc"}}>
-                            <ImageListItem sx={{width: 150, mr: 4}}>
+                            <ImageListItem sx={{width: { xs: 250, md: 150 }, mr: 4}}>
                               <img
                                 src={firstBook.img}
                                 srcSet={`${firstBook.img} 2x`}
