@@ -1,14 +1,14 @@
 import type { GetStaticProps, NextPage } from 'next'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppFooter from '../modules/views/AppFooter';
 import ProductValues from '../modules/views/ProductValues';
 import type {TweetNumberProps, Tweets, Tweet, Books} from '../modules/views/ProductValues';
 import AppAppBar from '../modules/views/AppAppBar';
-import { SWRConfig } from 'swr';
 import getCategory from '../services/category/get-category';
 import { ApiContext, Category, TweetData, BookData } from '../types/data';
 import getTweet from '../services/tweet/get-tweet';
 import getBook from '../services/book/get-book';
+import getCookie from '../services/user/get-cookie';
 
 type SSGProps = {
   tweet_datas: TweetData[] | [],
@@ -18,10 +18,19 @@ type SSGProps = {
 }
 
 const Home: NextPage<SSGProps> = (props) => {
-  const fallback = props.fallback
-  const [firstTweetNumber, setFirstTweetNumber] = useState(fallback['/api/current-user'].firstDefault)
-  const [secondTweetNumber, setSecondTweetNumber] = useState(fallback['/api/current-user'].secondDefault)
-
+  let firstDefault = 1
+  let secondDefault = 2
+  const [firstTweetNumber, setFirstTweetNumber] = useState(firstDefault)
+  const [secondTweetNumber, setSecondTweetNumber] = useState(secondDefault)
+  useEffect(() => {
+    (async() => {
+      const user = await getCookie()
+      firstDefault = user.firstDefault
+      secondDefault = user.secondDefault
+      setFirstTweetNumber(firstDefault)
+      setSecondTweetNumber(secondDefault)
+    })()
+  }, []);
   const tweetMap = new Map<number, Tweets>();
   if (props.tweet_datas.length > 0) {
     props.tweet_datas.map((tweetData, id) => {
@@ -76,16 +85,16 @@ const Home: NextPage<SSGProps> = (props) => {
   };
   return (
     <>
-    <SWRConfig value={{ fallback }}>
-      <AppAppBar 
+      <AppAppBar
       isShowMenuIcon={true}
       category_datas={props.category_datas}
+      firstTweetNumber={firstTweetNumber}
+      secondTweetNumber={secondTweetNumber}
       handleFirstTweetNumber={handleFirstTweetNumber}
       handleSecondTweetNumber={handleSecondTweetNumber}
       />
       <ProductValues {...tweetNumberProps}/>
       <AppFooter />
-    </SWRConfig>
     </>
   )
 }

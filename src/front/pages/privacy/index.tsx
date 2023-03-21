@@ -17,6 +17,8 @@ const Post: NextPage = ({ frontMatter, content }: any) => {
       <AppAppBar 
       isShowMenuIcon={false}
       category_datas={[]}
+      firstTweetNumber={1}
+      secondTweetNumber={2}
       handleFirstTweetNumber={()=>{}}
       handleSecondTweetNumber={()=>{}}
       />

@@ -10,7 +10,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import useSWR from 'swr'
 import { fetcher } from '../../utils';
 import ImageListItem from '@mui/material/ImageListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -53,11 +52,6 @@ export type Books = {
 
 function ProductValues(props: TweetNumberProps) {
   const {tweetMap, bookMap, firstTweetNumber, secondTweetNumber, setFirstTweetNumber, setSecondTweetNumber} = props
-  const { data } = useSWR('/api/current-user', fetcher)
-  React.useEffect(() => {
-    setFirstTweetNumber(data.firstDefault)
-    setSecondTweetNumber(data.secondDefault)
-  }, [data])
   const firstTweet = tweetMap.get(firstTweetNumber)
   const secondTweet = tweetMap.get(secondTweetNumber)
   const firstBooks = bookMap.get(firstTweetNumber) ?? []

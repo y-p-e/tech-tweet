@@ -20,9 +20,9 @@ import NextLink from 'next/link';
 import { Category  as CategoryDataType} from '../../types/data';
 import Avatar from '@mui/material/Avatar';
 import {registDefaultCateogry} from '../../services/category/regist-default';
-import useSWR from 'swr'
 import { fetcher } from '../../utils';
 import { logout } from '../../services/auth/logout';
+import getCookie from '../../services/user/get-cookie';
 
 export interface SelectedListItemProps {
   category_datas: CategoryDataType[];
@@ -66,24 +66,26 @@ export interface ConfirmationDialogRawProps {
   open: boolean;
   onClose: (value?: string) => void;
   category_datas: CategoryDataType[];
+  firstTweetNumber: number
+  secondTweetNumber: number
   handleFirstTweetNumber: (tweetNumber: number) => void;
   handleSecondTweetNumber: (tweetNumber: number) => void;
 }
 
 function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
-  const { data } = useSWR('/api/current-user', fetcher)
-  const firstTweetNumber = data.firstDefault
-  const secondTweetNumber = data.secondDefault
-  const { category_datas, handleFirstTweetNumber, handleSecondTweetNumber, onClose, value: valueProp, open, ...other } = props;
+  const { category_datas, firstTweetNumber, secondTweetNumber, handleFirstTweetNumber, handleSecondTweetNumber, onClose, value: valueProp, open, ...other } = props;
   const [value, setValue] = React.useState(valueProp);
   const radioGroupRef = React.useRef<HTMLElement>(null);
   const [selectedLeftIndex, setSelectedLeftIndex] = React.useState(firstTweetNumber);
   const [selectedRightIndex, setSelectedRightIndex] = React.useState(secondTweetNumber);
-  
+
   React.useEffect(() => {
-    setSelectedLeftIndex(firstTweetNumber)
-    setSelectedRightIndex(secondTweetNumber)
-  }, [firstTweetNumber, secondTweetNumber])
+    (async() => {
+      const user = await getCookie()
+      setSelectedLeftIndex(user.firstDefault)
+      setSelectedRightIndex(user.secondDefault)
+    })()
+  }, [selectedLeftIndex, selectedRightIndex]);
 
   React.useEffect(() => {
     if (!open) {
@@ -169,22 +171,28 @@ const rightLink = {
 type AppAppBarProps = {
   isShowMenuIcon: boolean,
   category_datas: CategoryDataType[],
+  firstTweetNumber: number,
+  secondTweetNumber: number,
   handleFirstTweetNumber: (tweetNumber: number) => void,
   handleSecondTweetNumber: (tweetNumber: number) => void,
 }
 
 function AppAppBar(props: AppAppBarProps) {
-  const { data } = useSWR('/api/current-user', fetcher)
-  const name = data?.name
+  const {isShowMenuIcon, category_datas, firstTweetNumber, secondTweetNumber, handleFirstTweetNumber, handleSecondTweetNumber} = props
   const [isSignIn, setIsSignIn] = React.useState(false);
+  const [name, setName] = React.useState('');
   React.useEffect(() => {
-    if (!name || name === '' ) {
-      setIsSignIn(false)
-    } else {
-      setIsSignIn(true)
-    }
-  }, [name])
-  const {isShowMenuIcon, category_datas, handleFirstTweetNumber, handleSecondTweetNumber} = props
+    (async() => {
+      const user = await getCookie()
+      setName(user.name)
+      console.log(name)
+      if (!name || name === '' ) {
+        setIsSignIn(false)
+      } else {
+        setIsSignIn(true)
+      }
+    })()
+  }, [name]);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('Dione');
 
@@ -220,6 +228,8 @@ function AppAppBar(props: AppAppBarProps) {
                   open={open}
                   onClose={handleClose}
                   category_datas={category_datas}
+                  firstTweetNumber={firstTweetNumber}
+                  secondTweetNumber={secondTweetNumber}
                   handleFirstTweetNumber={handleFirstTweetNumber}
                   handleSecondTweetNumber={handleSecondTweetNumber}
                   value={value}
