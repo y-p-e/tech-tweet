@@ -131,6 +131,6 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
         }
       }
     },
-    revalidate: 43200
+    revalidate: 86400
   }
 }
