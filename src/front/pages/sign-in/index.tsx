@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     const expiresIn = 60 * 60 * 24 * 90 * 1000; // 90日
     const options = {
       maxAge: expiresIn,
-      httpOnly: true,
+      httpOnly: false,
       path: "/",
     };
 	  nookies.set(context, 'name', user.name, options)

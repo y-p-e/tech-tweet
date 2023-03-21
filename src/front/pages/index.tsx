@@ -9,6 +9,7 @@ import { ApiContext, Category, TweetData, BookData } from '../types/data';
 import getTweet from '../services/tweet/get-tweet';
 import getBook from '../services/book/get-book';
 import getCookie from '../services/user/get-cookie';
+import {parseCookies} from 'nookies'
 
 type SSGProps = {
   tweet_datas: TweetData[] | [],
@@ -24,9 +25,10 @@ const Home: NextPage<SSGProps> = (props) => {
   const [secondTweetNumber, setSecondTweetNumber] = useState(secondDefault)
   useEffect(() => {
     (async() => {
-      const user = await getCookie()
-      firstDefault = user.firstDefault
-      secondDefault = user.secondDefault
+      const cookies = parseCookies()
+      const firstDefault = parseInt(cookies.firstDefault) || 1
+      const secondDefault = parseInt(cookies.secondDefault) || 2
+      console.log({ cookies })
       setFirstTweetNumber(firstDefault)
       setSecondTweetNumber(secondDefault)
     })()

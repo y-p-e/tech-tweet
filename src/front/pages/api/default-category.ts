@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			const expiresIn = 60 * 60 * 24 * 90 * 1000; // 90日
 			const options = {
 				maxAge: expiresIn,
-				httpOnly: true,
+				httpOnly: false,
 				path: "/",
 			};
 			setCookie({ res }, 'firstDefault', String(req.body.firstDefaultNumber), options);
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		}
 	}
 	const options = {
-		httpOnly: true,
+		httpOnly: false,
 		path: "/",
 	};
 	setCookie({ res }, 'firstDefault', String(req.body.firstDefaultNumber), options);

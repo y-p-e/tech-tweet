@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   case 'DELETE':
 		const options = {
 			maxAge: -1,
-			httpOnly: true,
+			httpOnly: false,
 			path: "/",
 		};
 		setCookie({ res }, 'firstDefault', '', options);

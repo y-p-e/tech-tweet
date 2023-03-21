@@ -23,6 +23,7 @@ import {registDefaultCateogry} from '../../services/category/regist-default';
 import { fetcher } from '../../utils';
 import { logout } from '../../services/auth/logout';
 import getCookie from '../../services/user/get-cookie';
+import { parseCookies } from 'nookies';
 
 export interface SelectedListItemProps {
   category_datas: CategoryDataType[];
@@ -81,11 +82,13 @@ function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
 
   React.useEffect(() => {
     (async() => {
-      const user = await getCookie()
-      setSelectedLeftIndex(user.firstDefault)
-      setSelectedRightIndex(user.secondDefault)
+      const cookies = parseCookies()
+      const firstDefault = parseInt(cookies.firstDefault) || 1
+      const secondDefault = parseInt(cookies.secondDefault) || 2
+      setSelectedLeftIndex(firstDefault)
+      setSelectedRightIndex(secondDefault)
     })()
-  }, [selectedLeftIndex, selectedRightIndex]);
+  }, []);
 
   React.useEffect(() => {
     if (!open) {
@@ -181,18 +184,19 @@ function AppAppBar(props: AppAppBarProps) {
   const {isShowMenuIcon, category_datas, firstTweetNumber, secondTweetNumber, handleFirstTweetNumber, handleSecondTweetNumber} = props
   const [isSignIn, setIsSignIn] = React.useState(false);
   const [name, setName] = React.useState('');
+  
   React.useEffect(() => {
     (async() => {
-      const user = await getCookie()
-      setName(user.name)
-      console.log(name)
+      const cookies = parseCookies()
+      const name = cookies.name || ''
+      setName(name)
       if (!name || name === '' ) {
         setIsSignIn(false)
       } else {
         setIsSignIn(true)
       }
     })()
-  }, [name]);
+  }, []);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('Dione');
 
