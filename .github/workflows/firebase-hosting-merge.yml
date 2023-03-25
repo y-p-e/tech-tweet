@@ -27,10 +27,6 @@ jobs:
           echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env
           echo "FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env
 
-      - name: Dependency install
-        run: |
-          npm install
-
       - name: deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
