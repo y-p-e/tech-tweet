@@ -25,9 +25,11 @@ GOOGLE_PRIVATE_API_KEY = os.environ['GOOGLE_PRIVATE_API_KEY']
 API_KEY = os.environ['API_KEY']
 
 # Generate state
-state = hashlib.sha256(os.urandom(32)).hexdigest()
-code_verifier1 = base64.urlsafe_b64encode(os.urandom(30)).decode("utf-8")
-code_verifier = re.sub("[^a-zA-Z0-9]+", "", code_verifier1)
-code_challenge1 = hashlib.sha256(code_verifier.encode("utf-8")).digest()
-code_challenge2 = base64.urlsafe_b64encode(code_challenge1).decode("utf-8")
-code_challenge = code_challenge2.replace("=", "")
+# state = hashlib.sha256(os.urandom(32)).hexdigest()
+# code_verifier1 = base64.urlsafe_b64encode(os.urandom(30)).decode("utf-8")
+# code_verifier = re.sub("[^a-zA-Z0-9]+", "", code_verifier1)
+code_verifier = os.environ['TWITTER_CODE_VERIFIER']
+# code_challenge1 = hashlib.sha256(code_verifier.encode("utf-8")).digest()
+# code_challenge2 = base64.urlsafe_b64encode(code_challenge1).decode("utf-8")
+# code_challenge = code_challenge2.replace("=", "")
+code_challenge = os.environ['TWITTER_CODE_CHALLENGE']
