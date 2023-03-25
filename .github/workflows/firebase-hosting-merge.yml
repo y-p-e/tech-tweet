@@ -34,3 +34,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TECH_TWEET_374313 }}'
           channelId: live
           projectId: tech-tweet-374313
+          entryPoint: src/front
