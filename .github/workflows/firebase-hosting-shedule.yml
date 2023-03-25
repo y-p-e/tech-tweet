@@ -4,7 +4,7 @@
 name: Deploy to Firebase Hosting on schedule
 'on':
   schedule:
-    - cron: "30 7 * * *"
+    - cron: "50 7 * * *"
 
 jobs:
   build_and_deploy:
@@ -19,6 +19,9 @@ jobs:
       - name: Create dot env file
         run: |
           touch .env
+          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> .env
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "NODE_ENV=production" >> .env
           echo "FB_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
           echo "FB_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> .env
           echo "FB_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env
