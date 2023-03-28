@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			};
 			setCookie({ res }, 'firstDefault', String(req.body.firstDefaultNumber), options);
 			setCookie({ res }, 'secondDefault', String(req.body.secondDefaultNumber), options);
+			return res.status(201).json({})
 		}
 	}
 	const options = {
