@@ -28,7 +28,6 @@ const Home: NextPage<SSGProps> = (props) => {
       const cookies = parseCookies()
       const firstDefault = parseInt(cookies.firstDefault) || 1
       const secondDefault = parseInt(cookies.secondDefault) || 2
-      console.log({ cookies })
       setFirstTweetNumber(firstDefault)
       setSecondTweetNumber(secondDefault)
     })()

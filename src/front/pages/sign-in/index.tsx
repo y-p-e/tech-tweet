@@ -11,15 +11,6 @@ import { TwitterLoginButton } from "react-social-login-buttons";
 import Link from '@mui/material/Link';
 import NextLink from 'next/link';
 import { useRouter } from "next/router";
-import { GetServerSideProps } from 'next'
-import type {ApiContext, AuthUrl} from '../../types/data'
-import getAuthUrl from '../../services/auth/get-auth-url'
-import authCallback from '../../services/auth/twitter_auth_callback';
-import nookies from "nookies";
-
-type SSRProps = {
-  authUrl: AuthUrl
-}
 
 function Copyright(props: any) {
   return (
@@ -36,9 +27,9 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-const SignIn: NextPage<SSRProps> = (props) => {
-  const {authUrl} = props
+const SignIn: NextPage = () => {
   const router = useRouter();
+  const authUrl = process.env.NEXT_PUBLIC_AUTH_URL || '/'
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -57,7 +48,7 @@ const SignIn: NextPage<SSRProps> = (props) => {
           <Typography component="h1" variant="h5" sx={{ mb: 4 }}>
             Sign in
           </Typography>
-          <TwitterLoginButton onClick={() => router.push(authUrl.auth_url)} />
+          <TwitterLoginButton onClick={() => router.push(authUrl)} />
           <Grid container sx={{ mt: 4 }}>
             <Grid item>
             <Link variant="body2" href="/" component={NextLink}>
@@ -73,47 +64,3 @@ const SignIn: NextPage<SSRProps> = (props) => {
 }
 
 export default SignIn
-
-
-export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
-  const apiContext: ApiContext = {
-    apiRootUrl: process.env.API_BASE_URL || 'http://localhost:8000',
-  }
-  const code = context.query.code;
-  if (typeof code === 'string') {
-    const user = await authCallback(apiContext, code)
-    const expiresIn = 60 * 60 * 24 * 90 * 1000; // 90日
-    const options = {
-      maxAge: expiresIn,
-      httpOnly: false,
-      path: "/",
-    };
-	  nookies.set(context, 'name', user.name, options)
-	  nookies.set(context, 'userId', String(user.id), options)
-	  nookies.set(context, 'sessionId', String(user.session_id), options)
-	  nookies.set(context, 'firstDefault', String(user.first_default), options)
-	  nookies.set(context, 'secondDefault', String(user.second_default), options)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/'
-      }
-    }
-  }
-
-  try{
-    const authUrl = await getAuthUrl(apiContext)
-    return {
-      props: {
-        authUrl,
-      },
-    }
-  }catch{
-    return {
-      props: {
-        authUrl: {auth_url: '/'},
-      },
-    }
-
-  }
-}
