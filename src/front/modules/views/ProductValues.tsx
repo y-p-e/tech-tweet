@@ -29,6 +29,8 @@ export type TweetNumberProps = {
   setSecondTweetNumber: (tweetNumber: number) => void;
   tweetMap: Map<number, Tweets>;
   bookMap: Map<number, Books[]>;
+  refFirstTweetTop: React.RefObject<HTMLDivElement>;
+  refSecondTweetTop: React.RefObject<HTMLDivElement>;
 }
 
 export type Tweet = {
@@ -51,7 +53,16 @@ export type Books = {
 }
 
 function ProductValues(props: TweetNumberProps) {
-  const {tweetMap, bookMap, firstTweetNumber, secondTweetNumber, setFirstTweetNumber, setSecondTweetNumber} = props
+  const {
+    tweetMap, 
+    bookMap, 
+    firstTweetNumber, 
+    secondTweetNumber, 
+    setFirstTweetNumber, 
+    setSecondTweetNumber, 
+    refFirstTweetTop, 
+    refSecondTweetTop, 
+  } = props
   const firstTweet = tweetMap.get(firstTweetNumber)
   const secondTweet = tweetMap.get(secondTweetNumber)
   const firstBooks = bookMap.get(firstTweetNumber) ?? []
@@ -81,6 +92,7 @@ function ProductValues(props: TweetNumberProps) {
                 }}
                 subheader={<li />}
               >
+                <div ref={refFirstTweetTop} />
                 <ul>
                   {firstTweet?.tweets.map((tweet, id) => {
                     const match = /(http[s]?:\/\/)[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?/.exec(tweet.tweet)
@@ -221,6 +233,7 @@ function ProductValues(props: TweetNumberProps) {
                 }}
                 subheader={<li />}
               >
+                <div ref={refSecondTweetTop} />
                 <ul>
                   {secondTweet?.tweets.map((tweet, id) => {
                     const match = /(http[s]?:\/\/)[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?/.exec(tweet.tweet)

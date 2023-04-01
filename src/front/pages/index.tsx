@@ -1,5 +1,5 @@
 import type { GetStaticProps, NextPage } from 'next'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef, useCallback } from 'react';
 import AppFooter from '../modules/views/AppFooter';
 import ProductValues from '../modules/views/ProductValues';
 import type {TweetNumberProps, Tweets, Tweet, Books} from '../modules/views/ProductValues';
@@ -69,6 +69,30 @@ const Home: NextPage<SSGProps> = (props) => {
       bookMap.set(bookData.category_id, bookArr)
     })
   }
+  const refFirstTweetTop = createRef<HTMLDivElement>()
+  const scrollToBottomOfListFirst = useCallback(() => {
+    refFirstTweetTop!.current!.scrollIntoView({
+      behavior: 'auto',
+      block: 'end',
+    })
+  }, [refFirstTweetTop])
+
+  useEffect(()=>{
+    scrollToBottomOfListFirst()
+  }, [firstTweetNumber])
+
+  const refSecondTweetTop = createRef<HTMLDivElement>()
+  const scrollToBottomOfListSecond = useCallback(() => {
+    refSecondTweetTop!.current!.scrollIntoView({
+      behavior: 'auto',
+      block: 'end',
+    })
+  }, [refSecondTweetTop])
+
+  useEffect(()=>{
+    scrollToBottomOfListSecond()
+  }, [secondTweetNumber])
+
   const tweetNumberProps: TweetNumberProps = {
     firstTweetNumber,
     secondTweetNumber,
@@ -76,6 +100,8 @@ const Home: NextPage<SSGProps> = (props) => {
     setSecondTweetNumber,
     tweetMap: tweetMap,
     bookMap: bookMap,
+    refFirstTweetTop,
+    refSecondTweetTop,
   }
 
   const handleFirstTweetNumber = (tweetNumber: number) => {
