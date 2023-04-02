@@ -24,6 +24,8 @@ import { fetcher } from '../../utils';
 import { logout } from '../../services/auth/logout';
 import getCookie from '../../services/user/get-cookie';
 import { parseCookies } from 'nookies';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export interface SelectedListItemProps {
   category_datas: CategoryDataType[];
@@ -185,6 +187,22 @@ function AppAppBar(props: AppAppBarProps) {
   const [isSignIn, setIsSignIn] = React.useState(false);
   const [name, setName] = React.useState('');
   
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openAvatar = Boolean(anchorEl);
+  const handleAvatarClickOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleAvatarClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleAvatarCloseLogout = () => {
+    logout()
+    setIsSignIn(false)
+    setAnchorEl(null);
+  };
+
+
   React.useEffect(() => {
     (async() => {
       const cookies = parseCookies()
@@ -245,7 +263,7 @@ function AppAppBar(props: AppAppBarProps) {
               variant="h6"
               underline="none"
               color="inherit"
-              sx={{ fontSize: 24 }}
+              sx={{ fontSize: { xs: 20, md: 24 } }}
               href="/"
               component={NextLink}
             >
@@ -254,7 +272,7 @@ function AppAppBar(props: AppAppBarProps) {
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
           {isSignIn &&
               <>
-                <Typography variant="h6" sx={{color: "secondary.light"}}>
+                <Typography variant="h6" sx={{color: "secondary.light", display: { xs: 'none', md: 'block' }}}>
                   {name}
                 </Typography>
               </>
@@ -277,13 +295,40 @@ function AppAppBar(props: AppAppBarProps) {
                 <Link
                   variant="h6"
                   underline="none"
-                  sx={{ ...rightLink, color: 'secondary.main' }}
+                  sx={{ ...rightLink, color: 'secondary.main', display: { xs: 'none', md: 'block' } }}
                   onClick={handleClickLogout}
                   href=""
                   component={NextLink}
                 >
                   {'Logout'}
                 </Link>
+              </>
+            }
+          {isSignIn &&
+              <>
+                <Box sx={{display: { xs: 'block', md: 'none' } }}>
+                  <Button
+                    id="basic-button"
+                    aria-controls={openAvatar ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={openAvatar ? 'true' : undefined}
+                    onClick={handleAvatarClickOpen}
+                  >
+                    <Avatar />
+                  </Button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={openAvatar}
+                    onClose={handleAvatarClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    <MenuItem>{name}</MenuItem>
+                    <MenuItem onClick={handleAvatarCloseLogout}>Logout</MenuItem>
+                  </Menu>
+                </Box>
               </>
             }
           </Box>
