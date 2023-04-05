@@ -56,7 +56,7 @@ def twitter_auth_callback(code: str, session):
 
     second_default = SecondDefaultCategory(
       user_id=user.id,
-      category_id=1
+      category_id=2
     )
     session.add(second_default)
     session.commit()
